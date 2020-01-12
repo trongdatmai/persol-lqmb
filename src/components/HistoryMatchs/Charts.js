@@ -18,7 +18,7 @@ const Charts = ({ match }) => {
         pointBorderColor: "#fff",
         pointHoverBackgroundColor: "#fff",
         pointHoverBorderColor: "rgba(30, 144, 255, 1)",
-        data: [match.blueKill / match.red * 10, match.blueKill, match.timeToPlay]
+        data: [match.blueKill / match.redKill * 10, match.blueKill, match.timeToPlay]
       },
       {
         label: "Red team",

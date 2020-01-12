@@ -46,7 +46,7 @@ const HistoryMatch = () => {
   useEffect(() => {
     ref.ref("historyMatch").once("value", snap => {
       if (snap.val() !== null) {
-        setMatchs(Object.values(snap.val()));
+        setMatchs(Object.values(snap.val()).reverse());
       }
     });
   }, []);
