@@ -41,17 +41,20 @@ var BreadcrumbsItem = function BreadcrumbsItem(_ref) {
 
   var routeName = findRouteName(match.url);
   if (routeName) {
-    return match.isExact ? React.createElement(
-      BreadcrumbItem,
-      { active: true },
-      routeName
-    ) : React.createElement(
-      BreadcrumbItem,
-      null,
-      React.createElement(
-        Link,
-        { to: match.url || '' },
+    return (
+      // eslint-disable-next-line react/prop-types
+      match.isExact ? React.createElement(
+        BreadcrumbItem,
+        { active: true },
         routeName
+      ) : React.createElement(
+        BreadcrumbItem,
+        null,
+        React.createElement(
+          Link,
+          { to: match.url || '' },
+          routeName
+        )
       )
     );
   }

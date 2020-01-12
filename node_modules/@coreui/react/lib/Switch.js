@@ -53,9 +53,9 @@ var defaultProps = {
   outline: false,
   size: '',
   checked: false,
-  defaultChecked: false,
-  disabled: false,
-  required: false,
+  defaultChecked: undefined,
+  disabled: undefined,
+  required: undefined,
   type: 'checkbox',
   variant: '',
   dataOn: 'On',
@@ -70,30 +70,47 @@ var AppSwitch = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
-    _this.onChange = _this.onChange.bind(_this);
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.handleKeyDown = _this.handleKeyDown.bind(_this);
+    _this.handleKeyUp = _this.handleKeyUp.bind(_this);
     _this.state = {
+      uncontrolled: !!_this.props.defaultChecked,
       checked: _this.props.defaultChecked || _this.props.checked,
       selected: []
     };
     return _this;
   }
 
-  AppSwitch.prototype.onChange = function onChange(event) {
-    var target = event.target;
+  AppSwitch.prototype.toggleState = function toggleState(check) {
     this.setState({
-      checked: target.checked
+      checked: check
     });
+  };
+
+  AppSwitch.prototype.handleChange = function handleChange(event) {
+    var target = event.target;
+    this.toggleState(target.checked);
 
     if (this.props.onChange) {
       this.props.onChange(event);
     }
   };
 
-  AppSwitch.prototype.componentDidUpdate = function componentDidUpdate(prevProps) {
-    if (this.props.checked !== prevProps.checked) {
-      this.setState({
-        checked: this.props.checked
-      });
+  AppSwitch.prototype.handleKeyDown = function handleKeyDown(event) {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  };
+
+  AppSwitch.prototype.handleKeyUp = function handleKeyUp(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      this.toggleState(!this.state.checked);
+    }
+  };
+
+  AppSwitch.prototype.componentDidUpdate = function componentDidUpdate(prevProps, prevState) {
+    if (!this.state.uncontrolled && this.props.checked !== prevState.checked) {
+      this.toggleState(this.props.checked);
     }
   };
 
@@ -114,6 +131,8 @@ var AppSwitch = function (_Component) {
         variant = _props.variant,
         attributes = _objectWithoutProperties(_props, ['className', 'disabled', 'color', 'name', 'label', 'outline', 'size', 'required', 'type', 'value', 'dataOn', 'dataOff', 'variant']);
 
+    var tabindex = attributes.tabIndex;
+    delete attributes.tabIndex;
     delete attributes.checked;
     delete attributes.defaultChecked;
     delete attributes.onChange;
@@ -126,8 +145,19 @@ var AppSwitch = function (_Component) {
 
     return _react2.default.createElement(
       'label',
-      { className: classes },
-      _react2.default.createElement('input', _extends({ type: type, className: inputClasses, onChange: this.onChange, checked: this.state.checked, name: name, required: required, disabled: disabled, value: value }, attributes)),
+      { className: classes, tabIndex: tabindex, onKeyUp: this.handleKeyUp, onKeyDown: this.handleKeyDown },
+      _react2.default.createElement('input', _extends({ type: type,
+        className: inputClasses,
+        onChange: this.handleChange,
+        checked: this.state.checked,
+        name: name,
+        required: required,
+        disabled: disabled,
+        value: value,
+        'aria-checked': this.state.checked,
+        'aria-disabled': disabled,
+        'aria-readonly': disabled
+      }, attributes)),
       _react2.default.createElement('span', { className: sliderClasses, 'data-checked': dataOn, 'data-unchecked': dataOff })
     );
   };
