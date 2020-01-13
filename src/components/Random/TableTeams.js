@@ -82,7 +82,7 @@ const TableTeams = ({ teams }) => {
                 <tr>
                   <th style={width}>Blue Team</th>
                   <th style={{ ...width, fontSize: 24 }}>👑</th>
-                  <th style={width}>Read Team</th>
+                  <th style={width}>Red Team</th>
                 </tr>
               </thead>
               <tbody>

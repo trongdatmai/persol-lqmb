@@ -4,6 +4,12 @@ import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import "./App.scss";
 import { FirebaseDatabaseProvider } from "@react-firebase/database";
 import RootContext, { initializeContext } from "./contextAPI";
+import ReactGA from 'react-ga';
+
+function initializeReactGA() {
+  ReactGA.initialize('UA-123791717-1');
+  ReactGA.pageview('/homepage');
+}
 
 const loading = () => (
   <div className="animated fadeIn pt-3 text-center">Loading...</div>

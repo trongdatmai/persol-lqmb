@@ -32,7 +32,7 @@ class DefaultHeader extends Component {
   };
 
   render() {
-    let avatar = '';
+    let avatar = 'https://image.flaticon.com/icons/svg/2439/2439789.svg';
     if(this.props.stateAPI && this.props.stateAPI.account && this.props.stateAPI.account.avatar) {
       avatar = this.props.stateAPI.account.avatar
     }

@@ -14,6 +14,8 @@ import {
 import firebase from "./../../config";
 import moment from "moment";
 import Charts from "./Charts";
+import Cup from "./cup.svg";
+import Lose from "./lose.svg";
 
 const days = [
   "Monday",
@@ -93,24 +95,23 @@ const HistoryMatch = () => {
             </strong>
           </CardHeader>
 
-          <CardBody>
+          <CardBody style={{ padding: '1.25rem 1.25rem 0 1.25rem'}}>
             <Row>
               <Col xs={12} sm={3} align="center" style={styled.flexCenter}>
-                {match.win === "blueTeam" ? (
-                  <h2 style={styled.win} className="mb-1">
-                    𝓦𝓘𝓝
-                  </h2>
-                ) : (
-                  <h2 style={styled.lose} className="mb-1">
-                    𝓛𝓞𝓢𝓔
-                  </h2>
-                )}
+                {
+                  <img
+                    src={match.win === "blueTeam" ? Cup : Lose}
+                    width="60px"
+                    className="mb-2"
+                  />
+                }
                 <strong className="d-block mb-3">Blue team</strong>
                 {renderPos(match.blueTeam).map((i, index) => (
                   <small className="d-block" key={i + index}>
                     {checkMVP(match.mvpWin, match.mvpLose, i)}
                   </small>
                 ))}
+                <h2 style={{color: '#FFC125'}} className="mt-3">{match.win === 'blueTeam' ? match.mvpWin : match.mvpLose}</h2>
               </Col>
               <Col xs={12} sm={6}>
                 <div style={styled.flexCenter}>
@@ -130,21 +131,20 @@ const HistoryMatch = () => {
                 <Charts match={match} />
               </Col>
               <Col xs={12} sm={3} align="center" style={styled.flexCenter}>
-                {match.win === "redTeam" ? (
-                  <h2 style={styled.win} className="mb-1">
-                    𝓦𝓘𝓝
-                  </h2>
-                ) : (
-                  <h2 style={styled.lose} className="mb-1">
-                    𝓛𝓞𝓢𝓔
-                  </h2>
-                )}
+                {
+                  <img
+                    src={match.win === "redTeam" ? Cup : Lose}
+                    width="60px"
+                    className="mb-2"
+                  />
+                }
                 <strong className="d-block mb-3">Red team</strong>
                 {renderPos(match.redTeam).map((i, index) => (
                   <small className="d-block" key={i + index}>
                     {checkMVP(match.mvpWin, match.mvpLose, i)}
                   </small>
                 ))}
+                <h2 style={{color: '#FFC125'}} className="mt-3">{match.win === 'redTeam' ? match.mvpWin : match.mvpLose}</h2>
               </Col>
             </Row>
           </CardBody>
