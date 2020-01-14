@@ -85,7 +85,6 @@ const HistoryMatch = () => {
     return name;
   };
   const RenderMatchs = ({ match }) => {
-    console.log(match);
     return (
       <Col xs="12">
         <Card>

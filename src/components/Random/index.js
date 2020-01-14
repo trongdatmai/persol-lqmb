@@ -26,6 +26,30 @@ const Random = ({ changeStatusProgress }) => {
   const [users, setUsers] = useState([]);
   const [teams, setTeams] = useState({});
   const [oldMatch, setOldMatch] = useState({});
+  const [randomPlayerNotInclude, setRandomPlayerNotInclude] = useState([]);
+  const [lastRandomNotPlay, setLastRandomNotPlay] = useState([]);
+
+ 
+
+  const handleRandomPlayer = () => {
+    setUsers(prev => prev.map(i => ({ ...i, checked: false })));
+    let arrayUsers = [...lastRandomNotPlay.map(i => i.ingame)];
+    let tempUsers = [...users].filter(i => !arrayUsers.includes(i.ingame));
+    let length = arrayUsers.length
+    for (let i = 0; i < 10 - length; i++) {
+      let index = ~~(Math.random() * tempUsers.length);
+      arrayUsers = [...arrayUsers, tempUsers[index] && tempUsers[index].ingame];
+      tempUsers.splice(index, 1);
+    }
+
+    setUsers(prev =>
+      prev.map(i =>
+        arrayUsers.includes(i.ingame) ? { ...i, checked: true } : i
+      )
+    );
+    setTeams({});
+    setRandomPlayerNotInclude(tempUsers);
+  };
 
   useEffect(() => {
     changeStatusProgress(true);
@@ -38,7 +62,7 @@ const Random = ({ changeStatusProgress }) => {
           Object.values(snap.val()).map(user => ({ ...user, checked: false }))
         );
       });
-      
+
     ref
       .ref("historyRandom")
       .orderByValue()
@@ -49,8 +73,18 @@ const Random = ({ changeStatusProgress }) => {
           setOldMatch(Object.values(snap.val())[0]);
         }
       });
+
+    ref
+      .ref("historyRandomNotPlay")
+      .orderByValue()
+      .limitToLast(1)
+      .on("value", snap => {
+        if (snap.val()) {
+          setLastRandomNotPlay(Object.values(snap.val())[0]);
+        }
+      });
   }, []);
-  
+
   const statisticPlayer = player => users.find(user => user.ingame === player);
 
   useEffect(() => {
@@ -152,21 +186,25 @@ const Random = ({ changeStatusProgress }) => {
           </td>
           <td>{user.ingame}</td>
           <td>
-            {user.role && user.role.map(r => (
-              <span key={user.username + r}>{r}, </span>
-            ))}
+            {user.role &&
+              user.role.map(r => <span key={user.username + r}>{r}, </span>)}
           </td>
           <td>{user.win}</td>
           <td>{user.lose}</td>
           <td>
-            {~~((user.win / (user.win + user.lose)) * 100 || 0)} <small>%</small>
+            {~~((user.win / (user.win + user.lose)) * 100 || 0)}{" "}
+            <small>%</small>
           </td>
           <td>
             <AppSwitch
               className={"mx-1"}
               color={"success"}
               checked={user.checked}
-              disabled={handleTotalSelected() === 10 && !user.checked || (!user.role || !user.role.length)}
+              disabled={
+                (handleTotalSelected() === 10 && !user.checked) ||
+                !user.role ||
+                !user.role.length
+              }
               onChange={({ target: { checked } }) => {
                 setUsers(prev =>
                   prev.map(p => {
@@ -196,16 +234,23 @@ const Random = ({ changeStatusProgress }) => {
       dateMatch: moment(new Date()).format("YYYY-MM-DD"),
       complete: false,
       authorCreate: JSON.parse(localStorage.getItem("account")).username,
-      authorUpdate: ''
+      authorUpdate: ""
     };
 
     ref.ref("historyRandom").push(statistic, snap => {
       changeStatusProgress(false);
     });
+    ref.ref("historyRandomNotPlay").push(randomPlayerNotInclude);
     setOldMatch(statistic);
   };
 
-  if(oldMatch.complete === false) return <OldMatch oldMatch={oldMatch} changeStatusProgress={changeStatusProgress}/>
+  if (oldMatch.complete === false)
+    return (
+      <OldMatch
+        oldMatch={oldMatch}
+        changeStatusProgress={changeStatusProgress}
+      />
+    );
 
   return (
     <Row>
@@ -248,8 +293,19 @@ const Random = ({ changeStatusProgress }) => {
                 <Button
                   block
                   color="success"
+                  onClick={handleRandomPlayer}
+                  fullWidth
+                >
+                  Random players
+                </Button>
+              </Col>
+              <Col col="6" sm="4" md="3" xl="2" className="mb-3 mb-xl-0">
+                <Button
+                  block
+                  color="success"
                   disabled={handleTotalSelected() !== 10}
                   onClick={handleSplitTeam}
+                  fullWidth
                 >
                   Random team
                 </Button>
