@@ -70,6 +70,7 @@ const OldMatch = ({ oldMatch, changeStatusProgress, reset }) => {
     });
   };
   const handleSaveHistory = async () => {
+    changeStatusProgress(false);
     await matchs.map(match => {
       ref.ref("historyMatch").push({
         ...match,
@@ -118,7 +119,10 @@ const OldMatch = ({ oldMatch, changeStatusProgress, reset }) => {
             }, () => { console.log('update 2 done' )});
         }
       });
-    setTimeout(window.location.reload(), 500);
+    setTimeout(() => {
+      changeStatusProgress(true);
+      window.location.reload();
+    }, 1500);
   };
 
   return (

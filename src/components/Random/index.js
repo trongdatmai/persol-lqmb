@@ -29,13 +29,11 @@ const Random = ({ changeStatusProgress }) => {
   const [randomPlayerNotInclude, setRandomPlayerNotInclude] = useState([]);
   const [lastRandomNotPlay, setLastRandomNotPlay] = useState([]);
 
- 
-
-  const handleRandomPlayer = () => {
+  const handleRandomPlayer = () => {    
     setUsers(prev => prev.map(i => ({ ...i, checked: false })));
     let arrayUsers = [...lastRandomNotPlay.map(i => i.ingame)];
     let tempUsers = [...users].filter(i => !arrayUsers.includes(i.ingame));
-    let length = arrayUsers.length
+    let length = arrayUsers.length;
     for (let i = 0; i < 10 - length; i++) {
       let index = ~~(Math.random() * tempUsers.length);
       arrayUsers = [...arrayUsers, tempUsers[index] && tempUsers[index].ingame];
@@ -124,7 +122,14 @@ const Random = ({ changeStatusProgress }) => {
   };
 
   const handleSplitTeam = () => {
-    const teams = users.filter(i => i.checked);
+    let teams = users.filter(i => i.checked);
+    let tmpTeams = [];
+    for(let i = 0; i<10; i++) {
+      const randomFollowLength = ~~(Math.random() * teams.length);
+      tmpTeams = [...tmpTeams, teams[randomFollowLength]];
+      teams.splice(randomFollowLength, 1);
+    }
+    teams = tmpTeams;
     const names = teams.map(i => i.ingame);
     const details = teams.reduce(
       (acc, cur) => ({ ...acc, [cur.ingame]: cur.role }),
@@ -170,11 +175,95 @@ const Random = ({ changeStatusProgress }) => {
     }
   };
 
+  const renderRole = r => {
+    switch (r) {
+      case "top":
+        return (
+          <Badge
+            style={{ background: "#0099FF", marginRight: 10, color: "white" }}
+          >
+            {r}
+          </Badge>
+        );
+      case "jungle":
+        return (
+          <Badge
+            style={{ background: "#3366CC", marginRight: 10, color: "white" }}
+          >
+            {r}
+          </Badge>
+        );
+      case "mid":
+        return (
+          <Badge
+            style={{ background: "#FF9900", marginRight: 10, color: "white" }}
+          >
+            {r}
+          </Badge>
+        );
+      case "ad":
+        return (
+          <Badge
+            style={{ background: "#f25e5e", marginRight: 10, color: "white" }}
+          >
+            {r}
+          </Badge>
+        );
+      case "support":
+        return (
+          <Badge
+            style={{ background: "#f2a766", marginRight: 10, color: "white" }}
+          >
+            {r}
+          </Badge>
+        );
+      default:
+        return r;
+    }
+  };
+  const renderWinRate = r => {
+    if (r <= 25) {
+      return (
+        <Badge
+          style={{ background: "#f25e5e", marginRight: 10, color: "white" }}
+        >
+          {r}
+          <small>%</small>
+        </Badge>
+      );
+    } else if (r <= 50) {
+      return (
+        <Badge color="warning">
+          {r}
+          <small>%</small>
+        </Badge>
+      );
+    } else if (r <= 75) {
+      return (
+        <Badge color="primary">
+          {r}
+          <small>%</small>
+        </Badge>
+      );
+    } else if (r <= 100) {
+      return (
+        <Badge color="success">
+          {r}
+          <small>%</small>
+        </Badge>
+      );
+    }
+  };
+
   const renderUser = () => {
     return users.map((user, index) => {
       return (
         <tr key={user.username}>
-          <td>{index + 1}</td>
+          <td>
+            <Badge style={{ background: "#660099", color: "white" }}>
+              {index + 1}
+            </Badge>
+          </td>
           <td>
             {user.avatar && (
               <CardImg
@@ -184,16 +273,25 @@ const Random = ({ changeStatusProgress }) => {
               />
             )}
           </td>
-          <td>{user.ingame}</td>
+          <td>
+            <Badge style={{ background: "#660099", color: "white" }}>
+              {user.ingame}
+            </Badge>
+          </td>
           <td>
             {user.role &&
-              user.role.map(r => <span key={user.username + r}>{r}, </span>)}
+              user.role.map(r => (
+                <span key={user.username + r}>{renderRole(r)}</span>
+              ))}
           </td>
-          <td>{user.win}</td>
-          <td>{user.lose}</td>
           <td>
-            {~~((user.win / (user.win + user.lose)) * 100 || 0)}{" "}
-            <small>%</small>
+            <Badge color="success">{user.win}</Badge>
+          </td>
+          <td>
+            <Badge color="danger">{user.lose}</Badge>
+          </td>
+          <td>
+            {renderWinRate(~~((user.win / (user.win + user.lose)) * 100 || 0))}
           </td>
           <td>
             <AppSwitch
