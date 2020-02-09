@@ -37,8 +37,7 @@ export default {
     {
       name: "Dashboard",
       url: "/dashboard",
-      icon: "icon-ban",
-      attributes: { disabled: true }
+      icon: "icon-puzzle",
     },
     // {
     //   name: "Colors",
