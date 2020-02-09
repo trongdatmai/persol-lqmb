@@ -43,7 +43,7 @@ const Dashboard = React.lazy(() => import('./components/Dashboard'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  // { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
@@ -85,8 +85,7 @@ const routes = [
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/user/profile', exact: true, name: 'Profile', component: Profile },
   { path: '/match/random', exact: true, name: 'Random', component: Random },
-  { path: '/match/history-matchs', exact: true, name: 'HistoryMatchs', component: HistoryMatchs },
-  { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard }
+  { path: '/match/history-matchs', exact: true, name: 'HistoryMatchs', component: HistoryMatchs }
 ];
 
 export default routes;

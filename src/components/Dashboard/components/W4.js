@@ -140,7 +140,7 @@ export default ({ account, historyMatchs }) => {
                             <strong>{chooseAccount.win} <small>({~~(chooseAccount.win / (chooseAccount.win + chooseAccount.lose) * 100)}%)</small></strong>
                             <Progress className="progress-xs mt-2" color="success" value={~~(chooseAccount.win / (chooseAccount.win + chooseAccount.lose) * 100)} />
                         </Col>
-                        <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
+                        <Col sm={12} md className="mb-sm-2 mb-0">
                             <div className="text-muted">Losing match</div>
                             <strong>{chooseAccount.lose} <small>({~~(chooseAccount.lose / (chooseAccount.win + chooseAccount.lose) * 100) + 1}%)</small></strong>
                             <Progress className="progress-xs mt-2" color="danger" value={~~(chooseAccount.lose / (chooseAccount.win + chooseAccount.lose) * 100) + 1} />
@@ -155,7 +155,7 @@ export default ({ account, historyMatchs }) => {
                             <strong>{~~((parseInt(chooseAccount.lose) + parseInt(chooseAccount.win)) / parseInt(historyMatchs.length) * 100)}%</strong>
                             <Progress className="progress-xs mt-2" color="primary" value={~~((parseInt(chooseAccount.lose) + parseInt(chooseAccount.win)) / parseInt(historyMatchs.length) * 100)} />
                         </Col>
-                        <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
+                        <Col sm={12} md className="mb-sm-2 mb-0">
                             <div className="text-muted">Longest winning streak</div>
                             <strong>{statisticForGame.winSequence}</strong>
                             <Progress className="progress-xs mt-2" color="warning" value="100" />
