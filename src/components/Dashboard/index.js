@@ -86,7 +86,7 @@ const Dashboard = ({ changeStatusProgress }) => {
     if (!fecthStatus) return null
     return (<>
         <div className="animated fadeIn">
-            <W1 account={account} historyMatchs={historyMatchs} t1={t1} t2={t2} t3={t3} t4={t4}/>
+            <W1 account={account} historyMatchs={historyMatchs} t1={t1} t4={t4}/>
             <W2 account={account} historyMatchs={historyMatchs} t1={t1} t2={t2} t3={t3} t4={t4}/>
             <W3 account={account} statisticWLPlayers={statisticWLPlayers} />
             <W4 account={account} historyMatchs={historyMatchs}/>

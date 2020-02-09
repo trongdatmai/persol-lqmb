@@ -14,12 +14,12 @@ import {
 } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
 
-let myAccount = JSON.parse(localStorage.getItem('account') || '{}');
 
 export default ({ account, historyMatchs }) => {
+    let myAccount = JSON.parse(localStorage.getItem('account') || '{}');
     myAccount = account.find(e => e.username === myAccount.username)
     
-    const [name, setName] = useState(myAccount.ingame);
+    const [name, setName] = useState(!!myAccount && myAccount.ingame || '');
     const chooseAccount = account.find(e => e.ingame === name)
 
     const matchsForName = [...historyMatchs].filter(i => i.blueTeam.some(e => { return e.search(name) !== -1 }) || i.redTeam.some(e => { return e.search(name) !== -1 }))
@@ -120,7 +120,7 @@ export default ({ account, historyMatchs }) => {
                                 <Col xs="12" md="4">
                                     <Input type="select" value={name} name="select" id="select" onChange={e => setName(e.target.value)}>
                                         {
-                                            account.map(acc => {
+                                            !!account.length && account.map(acc => {
                                                 return <option value={acc.ingame} key={acc.ingame}>{acc.ingame}</option>
                                             })
                                         }
@@ -134,7 +134,7 @@ export default ({ account, historyMatchs }) => {
                     </div>
                 </CardBody>
                 <CardFooter>
-                    <Row className="text-center">
+                    {!!chooseAccount && !!name && <Row className="text-center">
                         <Col sm={12} md className="mb-sm-2 mb-0">
                             <div className="text-muted">Win match</div>
                             <strong>{chooseAccount.win} <small>({~~(chooseAccount.win / (chooseAccount.win + chooseAccount.lose) * 100)}%)</small></strong>
@@ -160,7 +160,7 @@ export default ({ account, historyMatchs }) => {
                             <strong>{statisticForGame.winSequence}</strong>
                             <Progress className="progress-xs mt-2" color="warning" value="100" />
                         </Col>
-                    </Row>
+                    </Row>}
                 </CardFooter>
             </Card>
         </Col>

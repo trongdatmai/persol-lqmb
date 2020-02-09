@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { Card, CardBody, CardHeader, Col, Row, FormGroup, Label, Input, Progress } from 'reactstrap';
 import Widget01 from './../../../views/Widgets/Widget01';
 
-let myAccount = JSON.parse(localStorage.getItem('account') || '{}');
 
 export default ({ account, statisticWLPlayers }) => {
+  let myAccount = JSON.parse(localStorage.getItem('account') || '{}');
   myAccount = account.find(e => e.username === myAccount.username)
-  const [name, setName] = useState(myAccount.ingame);
+  const [name, setName] = useState(!!myAccount && myAccount.ingame || '');
   const statisticChooseName = statisticWLPlayers[name]
 
   const totalMatchs = () => {
@@ -18,7 +18,7 @@ export default ({ account, statisticWLPlayers }) => {
   const chooseAccount = account.find(e => e.ingame === name)
 
   const renderStatistic = () => {
-    if (!name) return;
+    if (!name) return {};
     let rs = {}
     const w = statisticChooseName.win
     const l = statisticChooseName.lose
@@ -30,8 +30,8 @@ export default ({ account, statisticWLPlayers }) => {
     }
     return rs
   }
- const sortStatisticWin = Object.values(renderStatistic()).reduce((acc, cur, index) => cur.win >= acc.w ? acc = { w: cur.win, i: index} : acc, { w: 0, i: 0})
- const sortStatisticLose = Object.values(renderStatistic()).reduce((acc, cur, index) => cur.lose >= acc.l ? acc = { l: cur.lose, i: index} : acc, { l: 0, i: 0})
+ const sortStatisticWin = !!renderStatistic && Object.values(renderStatistic()).reduce((acc, cur, index) => cur.win >= acc.w ? acc = { w: cur.win, i: index} : acc, { w: 0, i: 0})
+ const sortStatisticLose = !!renderStatistic && Object.values(renderStatistic()).reduce((acc, cur, index) => cur.lose >= acc.l ? acc = { l: cur.lose, i: index} : acc, { l: 0, i: 0})
 
   return <div className="animated fadeIn">
     <Row>
@@ -50,7 +50,7 @@ export default ({ account, statisticWLPlayers }) => {
                   <Col xs="12" md="4">
                     <Input type="select" value={name} name="select" id="select" onChange={e => setName(e.target.value)}>
                       {
-                        account.map(acc => {
+                        !!account.length && account.map(acc => {
                           return <option value={acc.ingame} key={acc.ingame}>{acc.ingame}</option>
                         })
                       }
@@ -61,13 +61,13 @@ export default ({ account, statisticWLPlayers }) => {
             </Row>
             <Row>
             <Col xs="12" md="4">
-              <Widget01 color="primary" value={(chooseAccount.win / (chooseAccount.win + chooseAccount.lose) * 100).toString()} variant="inverse" header={"Matchs: " + totalMatchs()} mainText={"Win: " + chooseAccount.win + "\n Lose: " + chooseAccount.lose} smallText=""/>
+              {!!name && <Widget01 color="primary" value={(chooseAccount.win / (chooseAccount.win + chooseAccount.lose) * 100).toString()} variant="inverse" header={"Matchs: " + totalMatchs()} mainText={"Win: " + chooseAccount.win + "\n Lose: " + chooseAccount.lose} smallText=""/>}
             </Col>
             <Col xs="12" md="4">
-              <Widget01 color="success" variant="inverse" header={"Outstanding teammate: "} mainText={ Object.keys(renderStatistic())[sortStatisticWin.i] + " - Win: " + sortStatisticWin.w} smallText=""/>
+              {!!name && <Widget01 color="success" variant="inverse" header={"Outstanding teammate: "} mainText={ Object.keys(renderStatistic())[sortStatisticWin.i] + " - Win: " + sortStatisticWin.w} smallText=""/>}
             </Col>
             <Col xs="12" md="4">
-            <Widget01 color="danger" variant="inverse" header={"Lousy teammate: "} mainText={Object.keys(renderStatistic())[sortStatisticLose.i] + " - Lose: " + sortStatisticLose.l} smallText=""/>
+            {!!name && <Widget01 color="danger" variant="inverse" header={"Lousy teammate: "} mainText={Object.keys(renderStatistic())[sortStatisticLose.i] + " - Lose: " + sortStatisticLose.l} smallText=""/>}
             </Col>
 
             </Row>
