@@ -13,61 +13,61 @@ const Dashboard = ({ changeStatusProgress }) => {
 
     const statisticWLPlayers = [...account].reduce((acc, cur) => {
         const objTmp = { win: {}, lose: {} };
-        const {ingame} = cur
-        if(!cur || !historyMatchs) return;
+        const { ingame } = cur
+        if (!cur || !historyMatchs) return;
         historyMatchs.map(h => {
-            if(h.blueTeam.some(e => {return e.search(ingame) !== -1 })) {
-                if(h.win === 'blueTeam') {
+            if (h.blueTeam.some(e => { return e.search(ingame) !== -1 })) {
+                if (h.win === 'blueTeam') {
                     h.blueTeam.map(p => {
                         p = p.split(' - ')[0]
-                        if(p !== ingame) {
+                        if (p !== ingame) {
                             objTmp.win = !!objTmp.win[p] ? { ...objTmp.win, [p]: objTmp.win[p] + 1 } : { ...objTmp.win, [p]: 1 }
                         }
                     })
                 } else {
                     h.blueTeam.map(p => {
                         p = p.split(' - ')[0]
-                        if(p !== ingame) {
+                        if (p !== ingame) {
                             objTmp.lose = !!objTmp.lose[p] ? { ...objTmp.lose, [p]: objTmp.lose[p] + 1 } : { ...objTmp.lose, [p]: 1 }
                         }
                     })
                 }
             }
-            if(h.redTeam.some(e => { return e.search(ingame) !== -1})) {
-                if(h.win === 'redTeam') {
+            if (h.redTeam.some(e => { return e.search(ingame) !== -1 })) {
+                if (h.win === 'redTeam') {
                     h.redTeam.map(p => {
                         p = p.split(' - ')[0]
-                        if(p !== ingame) {
+                        if (p !== ingame) {
                             objTmp.win = !!objTmp.win[p] ? { ...objTmp.win, [p]: objTmp.win[p] + 1 } : { ...objTmp.win, [p]: 1 }
                         }
                     })
                 } else {
                     h.redTeam.map(p => {
                         p = p.split(' - ')[0]
-                        if(p !== ingame) {
+                        if (p !== ingame) {
                             objTmp.lose = !!objTmp.lose[p] ? { ...objTmp.lose, [p]: objTmp.lose[p] + 1 } : { ...objTmp.lose, [p]: 1 }
                         }
                     })
                 }
             }
         })
-        return ({...acc, [cur.ingame]: objTmp})
+        return ({ ...acc, [cur.ingame]: objTmp })
     }, {})
 
     const t1 = () => {
         return [...account].sort((a, b) => ((a.win + a.lose) < (b.win + b.lose) ? 1 : (a.win + a.lose) > (b.win + b.lose) ? -1 : 0))
-      }
-      const t2 = () => {
+    }
+    const t2 = () => {
         return [...account].sort((a, b) => ((a.win) < (b.win) ? 1 : (a.win) > (b.win) ? -1 : 0))
-      }
-    
-      const t3 = () => {
+    }
+
+    const t3 = () => {
         return [...account].sort((a, b) => ((a.lose) < (b.lose) ? 1 : (a.lose) > (b.lose) ? -1 : 0))
-      }
-    
-      const t4 = () => {
+    }
+
+    const t4 = () => {
         return [...account].sort((a, b) => ((~~((a.win / (a.win + a.lose)) * 100 || 0)) < (~~((b.win / (b.win + b.lose)) * 100 || 0)) ? 1 : (~~((a.win / (a.win + a.lose)) * 100 || 0)) > (~~((b.win / (b.win + b.lose)) * 100 || 0)) ? -1 : 0))
-      }
+    }
     const initFunc = async () => {
         const snapshotUsers = ref.ref("users").once("value")
         const snapshotMatchs = ref.ref("historyMatch").once("value")
@@ -85,12 +85,14 @@ const Dashboard = ({ changeStatusProgress }) => {
 
     if (!fecthStatus) return null
     return (<>
-        <div className="animated fadeIn">
-            <W1 account={account} historyMatchs={historyMatchs} t1={t1} t4={t4}/>
-            <W2 account={account} historyMatchs={historyMatchs} t1={t1} t2={t2} t3={t3} t4={t4}/>
-            <W3 account={account} statisticWLPlayers={statisticWLPlayers} />
-            <W4 account={account} historyMatchs={historyMatchs}/>
-        </div>
+        {
+            !!account.length && <div className="animated fadeIn">
+                <W1 account={account} historyMatchs={historyMatchs} t1={t1} t4={t4} />
+                <W2 account={account} historyMatchs={historyMatchs} t1={t1} t2={t2} t3={t3} t4={t4} />
+                <W3 account={account} statisticWLPlayers={statisticWLPlayers} />
+                <W4 account={account} historyMatchs={historyMatchs} />
+            </div>
+        }
     </>)
 }
 

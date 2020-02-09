@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Card,
     CardBody,
@@ -16,12 +16,14 @@ import { Line } from 'react-chartjs-2';
 
 
 export default ({ account, historyMatchs }) => {
-    let myAccount = JSON.parse(localStorage.getItem('account') || '{}');
-    myAccount = account.find(e => e.username === myAccount.username)
     
-    const [name, setName] = useState(!!myAccount && myAccount.ingame || '');
+    const [name, setName] = useState('');
     const chooseAccount = account.find(e => e.ingame === name)
-
+    useEffect(() => {
+        let myAccount = JSON.parse(localStorage.getItem('account') || '{}');
+        myAccount = account.find(e => e.username === myAccount.username)|| { ingame: ''}
+        setName(myAccount.ingame)
+      }, [])
     const matchsForName = [...historyMatchs].filter(i => i.blueTeam.some(e => { return e.search(name) !== -1 }) || i.redTeam.some(e => { return e.search(name) !== -1 }))
     const checkBlueTeamWinGame = (win, team) => team.some(e => { return e.search(name) !== -1 }) && win === 'blueTeam'
     const checkRedTeamWinGame = (win, team) => team.some(e => { return e.search(name) !== -1 }) && win === 'redTeam'

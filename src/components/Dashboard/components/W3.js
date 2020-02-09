@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardBody, CardHeader, Col, Row, FormGroup, Label, Input, Progress } from 'reactstrap';
 import Widget01 from './../../../views/Widgets/Widget01';
 
 
 export default ({ account, statisticWLPlayers }) => {
-  let myAccount = JSON.parse(localStorage.getItem('account') || '{}');
-  myAccount = account.find(e => e.username === myAccount.username)
-  const [name, setName] = useState(!!myAccount && myAccount.ingame || '');
+ 
+  const [name, setName] = useState('');
   const statisticChooseName = statisticWLPlayers[name]
 
+  useEffect(() => {
+    let myAccount = JSON.parse(localStorage.getItem('account') || '{}');
+    myAccount = account.find(e => e.username === myAccount.username) || { ingame: ''}
+    setName(myAccount.ingame)
+  }, [])
   const totalMatchs = () => {
     if (!account.length || !name) return;
     const player = [...account].filter(e => e.ingame === name)[0]
