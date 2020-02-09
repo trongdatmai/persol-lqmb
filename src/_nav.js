@@ -34,6 +34,11 @@ export default {
       url: "/user/profile",
       icon: "icon-user"
     },
+    {
+      name: "Dashboard",
+      url: "/dashboard",
+      icon: "icon-user"
+    },
     // {
     //   name: "Colors",
     //   url: "/theme/colors",

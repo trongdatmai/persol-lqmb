@@ -22,7 +22,7 @@ const ButtonDropdowns = React.lazy(() => import('./views/Buttons/ButtonDropdowns
 const ButtonGroups = React.lazy(() => import('./views/Buttons/ButtonGroups'));
 const Buttons = React.lazy(() => import('./views/Buttons/Buttons'));
 const Charts = React.lazy(() => import('./views/Charts'));
-const Dashboard = React.lazy(() => import('./views/Dashboard'));
+// const Dashboard = React.lazy(() => import('./views/Dashboard'));
 const CoreUIIcons = React.lazy(() => import('./views/Icons/CoreUIIcons'));
 const Flags = React.lazy(() => import('./views/Icons/Flags'));
 const FontAwesome = React.lazy(() => import('./views/Icons/FontAwesome'));
@@ -38,11 +38,12 @@ const User = React.lazy(() => import('./views/Users/User'));
 const Profile = React.lazy(() => import('./components/Profile'));
 const Random = React.lazy(() => import('./components/Random'));
 const HistoryMatchs = React.lazy(() => import('./components/HistoryMatchs'));
+const Dashboard = React.lazy(() => import('./components/Dashboard'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  // { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
@@ -85,6 +86,7 @@ const routes = [
   { path: '/user/profile', exact: true, name: 'Profile', component: Profile },
   { path: '/match/random', exact: true, name: 'Random', component: Random },
   { path: '/match/history-matchs', exact: true, name: 'HistoryMatchs', component: HistoryMatchs },
+  { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard }
 ];
 
 export default routes;

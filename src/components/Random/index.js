@@ -171,7 +171,23 @@ const Random = ({ changeStatusProgress }) => {
       splitTeam[0].filter(Boolean).length === 5 &&
       splitTeam[1].filter(Boolean).length === 5
     ) {
-      setTeams(splitTeam);
+      const point1 = splitTeam[0].reduce((acc, cur) => {
+        const name = cur.split(' - ')[0];
+        const u = users.find(u => u.ingame === name);
+        acc += u.coefficient
+        return acc
+      }, 0)
+      const point2 = splitTeam[1].reduce((acc, cur) => {
+        const name = cur.split(' - ')[0];
+        const u = users.find(u => u.ingame === name);
+        acc += u.coefficient
+        return acc
+      }, 0)
+      if(Math.abs(point1 - point2) < 0.2) {
+        setTeams(splitTeam);
+      } else {
+        return handleSplitTeam();
+      }
     }
   };
 
