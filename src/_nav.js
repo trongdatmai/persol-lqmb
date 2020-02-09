@@ -37,7 +37,7 @@ export default {
     {
       name: "Dashboard",
       url: "/dashboard",
-      icon: "icon-puzzle",
+      icon: "icon-bell",
     },
     // {
     //   name: "Colors",
