@@ -53,7 +53,7 @@ export default ({ account, historyMatchs }) => {
 
 
     const data = {
-        labels: [...Object.keys(statisticForGame)].splice(2, Object.keys(statisticForGame).length - 1),
+        labels: [...Object.keys(statisticForGame)].filter(i => i !== 'winSequence' && i !== 'winSequenceTmp'),
         datasets: [
             {
                 label: 'Win match',
@@ -74,7 +74,7 @@ export default ({ account, historyMatchs }) => {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: Object.values(statisticForGame).splice(2, Object.keys(statisticForGame).length - 1).map(i => i.win)
+                data: Object.values(statisticForGame).filter(i => typeof(i) !== 'number').map(i => i.win)
             },
             {
                 label: 'Losing match',
@@ -95,7 +95,7 @@ export default ({ account, historyMatchs }) => {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: Object.values(statisticForGame).splice(2, Object.keys(statisticForGame).length - 1).map(i => i.lose)
+                data: Object.values(statisticForGame).filter(i => typeof(i) !== 'number').map(i => i.lose)
             }
         ]
     };
