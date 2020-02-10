@@ -174,16 +174,17 @@ const Random = ({ changeStatusProgress }) => {
       const point1 = splitTeam[0].reduce((acc, cur) => {
         const name = cur.split(' - ')[0];
         const u = users.find(u => u.ingame === name);
-        acc += u.coefficient
+        acc += u.coefficient * ~~(u.win/(u.win +u.lose) * 100)
         return acc
       }, 0)
       const point2 = splitTeam[1].reduce((acc, cur) => {
         const name = cur.split(' - ')[0];
         const u = users.find(u => u.ingame === name);
-        acc += u.coefficient
+        acc += u.coefficient * ~~(u.win/(u.win +u.lose) * 100)
         return acc
       }, 0)
-      if(Math.abs(point1 - point2) < 0.2) {
+      
+      if(Math.abs(point1 - point2) < 40) {
         setTeams(splitTeam);
       } else {
         return handleSplitTeam();
