@@ -9,7 +9,8 @@ import {
   Label,
   Row,
   Button,
-  CardImg
+  CardImg,
+  Badge
 } from "reactstrap";
 import firebase from "./../../config";
 
@@ -54,6 +55,12 @@ const Profile = ({ changeStatusProgress, changeState }) => {
         changeStatusProgress(false);
       });
   };
+
+  const renderPointLane = (lane) => {
+    if(!account.role) return;
+    const p = account.role.findIndex(i => i.toLowerCase() === lane.toLowerCase())
+    if(p !== -1) return 5 - p
+  }
 
   return (
     <Row>
@@ -110,7 +117,7 @@ const Profile = ({ changeStatusProgress, changeState }) => {
                     }
                   />
                   <Label check className="form-check-label" htmlFor="Top">
-                    Top
+                    Top <Badge color="success">{renderPointLane("Top")}</Badge>
                   </Label>
                 </FormGroup>
                 <FormGroup check className="checkbox">
@@ -135,7 +142,7 @@ const Profile = ({ changeStatusProgress, changeState }) => {
                     }
                   />
                   <Label check className="form-check-label" htmlFor="Jungle">
-                    Jungle
+                    Jungle <Badge color="success">{renderPointLane("Jungle")}</Badge>
                   </Label>
                 </FormGroup>
                 <FormGroup check className="checkbox">
@@ -160,7 +167,7 @@ const Profile = ({ changeStatusProgress, changeState }) => {
                     }
                   />
                   <Label check className="form-check-label" htmlFor="Mid">
-                    Mid
+                    Mid <Badge color="success">{renderPointLane("Mid")}</Badge>
                   </Label>
                 </FormGroup>
                 <FormGroup check className="checkbox">
@@ -183,7 +190,7 @@ const Profile = ({ changeStatusProgress, changeState }) => {
                     }
                   />
                   <Label check className="form-check-label" htmlFor="Ad">
-                    Ad
+                    Ad <Badge color="success">{renderPointLane("Ad")}</Badge>
                   </Label>
                 </FormGroup>
                 <FormGroup check className="checkbox">
@@ -208,7 +215,7 @@ const Profile = ({ changeStatusProgress, changeState }) => {
                     }
                   />
                   <Label check className="form-check-label" htmlFor="Support">
-                    Support
+                    Support <Badge color="success">{renderPointLane("Support")}</Badge>
                   </Label>
                 </FormGroup>
               </Col>

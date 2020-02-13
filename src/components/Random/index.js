@@ -142,11 +142,12 @@ const Random = ({ changeStatusProgress }) => {
 
     const renderLane = (player, team) => {
       try {
-        const rLane = details[player][random()];
+        const r = random()
+        const rLane = details[player][r];
         if (!rLane || team.some(i => i.includes(rLane))) {
           return renderLane(player, team);
         }
-        return `${player} - ${rLane}`;
+        return `${player} - ${rLane} - ${5 - r}`;
       } catch (err) {
         return handleSplitTeam();
       }
@@ -166,25 +167,29 @@ const Random = ({ changeStatusProgress }) => {
       },
       { "0": [], "1": [] }
     );
-
     if (
       splitTeam[0].filter(Boolean).length === 5 &&
       splitTeam[1].filter(Boolean).length === 5
     ) {
       const point1 = splitTeam[0].reduce((acc, cur) => {
-        const name = cur.split(' - ')[0];
+        const split = cur.split(' - ');
+        const name = split[0];
+        const pLane = split[2];
         const u = users.find(u => u.ingame === name);
-        acc += u.coefficient * ~~(u.win/(u.win +u.lose) * 100)
+        acc += u.coefficient * pLane * ~~(u.win/(u.win +u.lose))
         return acc
       }, 0)
       const point2 = splitTeam[1].reduce((acc, cur) => {
-        const name = cur.split(' - ')[0];
+        const split = cur.split(' - ');
+        const name = split[0];
+        const pLane = split[2];
         const u = users.find(u => u.ingame === name);
-        acc += u.coefficient * ~~(u.win/(u.win +u.lose) * 100)
+        acc += u.coefficient * pLane * ~~(u.win/(u.win +u.lose))
         return acc
       }, 0)
-      
-      if(Math.abs(point1 - point2) < 40) {
+      if(Math.abs(point1 - point2) < 1) {
+        console.log(Math.abs(point1 - point2))
+        console.log(splitTeam)
         setTeams(splitTeam);
       } else {
         return handleSplitTeam();
@@ -310,6 +315,7 @@ const Random = ({ changeStatusProgress }) => {
           <td>
             {renderWinRate(~~((user.win / (user.win + user.lose)) * 100 || 0))}
           </td>
+          <td><Badge style={{ background: "#660099", color: "white" }}>{user.coefficient}</Badge></td>
           <td>
             <AppSwitch
               className={"mx-1"}
@@ -386,6 +392,7 @@ const Random = ({ changeStatusProgress }) => {
             {(handleTotalSelected() !== 10 && (
               <small>Choose 10 players from the board</small>
             )) || <small>Picked enough</small>}
+            <p style={{marginBottom: 20, marginTop: 10}}><Badge style={{ background: "#660099", color: "white" }}>coefficient:</Badge><small> Ranking factor in the game (Diamond(V-I): .7, Veteran(V-II): .8, Veteran I:1, Master(0-1): 1.1, [Master(+10*) += .1])</small></p>
             <Table hover bordered striped responsive size="sm">
               <thead>
                 <tr>
@@ -398,6 +405,7 @@ const Random = ({ changeStatusProgress }) => {
                   <th>
                     Win rate <small>(%)</small>
                   </th>
+                  <th>coefficient</th>
                   <th>Status</th>
                 </tr>
               </thead>

@@ -39,6 +39,7 @@ const Profile = React.lazy(() => import('./components/Profile'));
 const Random = React.lazy(() => import('./components/Random'));
 const HistoryMatchs = React.lazy(() => import('./components/HistoryMatchs'));
 const Dashboard = React.lazy(() => import('./components/Dashboard'));
+const Compare = React.lazy(() => import('./components/Compare'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -85,7 +86,8 @@ const routes = [
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/user/profile', exact: true, name: 'Profile', component: Profile },
   { path: '/match/random', exact: true, name: 'Random', component: Random },
-  { path: '/match/history-matchs', exact: true, name: 'HistoryMatchs', component: HistoryMatchs }
+  { path: '/match/history-matchs', exact: true, name: 'HistoryMatchs', component: HistoryMatchs },
+  { path: '/compare-players', exact: true, name: 'Compare Players', component: Compare }
 ];
 
 export default routes;

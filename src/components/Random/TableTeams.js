@@ -45,7 +45,7 @@ const TableTeams = ({ teams }) => {
 
   const renderPlayer = player => {
     const spl = player.split(" - ");
-
+    console.log(spl)
     return (
       <>
         <span>
@@ -53,14 +53,14 @@ const TableTeams = ({ teams }) => {
         </span>
         <span>{spl[0]}</span>
         <span style={{ marginLeft: 25 }}>
-          <Badge color="success">{spl[1]}</Badge>
+          <Badge color="success">{spl[2]}</Badge>
         </span>
         <span style={{ marginLeft: 10 }}>
-          <Badge color="danger">{spl[2]}</Badge>
+          <Badge color="danger">{spl[3]}</Badge>
         </span>
         <span style={{ marginLeft: 10 }}>
           <Badge color="primary">
-            {~~((parseInt(spl[1]) / (parseInt(spl[1]) + parseInt(spl[2]))) * 100) ||
+            {~~((parseInt(spl[2]) / (parseInt(spl[2]) + parseInt(spl[3]))) * 100) ||
               0}{" "}
             <small>%</small>
           </Badge>
