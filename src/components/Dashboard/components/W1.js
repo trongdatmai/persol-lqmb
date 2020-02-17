@@ -4,7 +4,6 @@ import { Col, Row } from 'reactstrap';
 import moment from 'moment'
 
 export default ({ account, historyMatchs, t1, t4 }) => {
-
     const calcAvgMatchOfWeek = () => {
         const weekNumber = moment(historyMatchs[0].dateMatch, "YYYY-MM-DD").week();
         const weekCurrent = moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD").week();

@@ -66,7 +66,7 @@ const Dashboard = ({ changeStatusProgress }) => {
     }
 
     const t4 = () => {
-        return [...account].sort((a, b) => ((~~((a.win / (a.win + a.lose)) * 100 || 0)) < (~~((b.win / (b.win + b.lose)) * 100 || 0)) ? 1 : (~~((a.win / (a.win + a.lose)) * 100 || 0)) > (~~((b.win / (b.win + b.lose)) * 100 || 0)) ? -1 : 0))
+        return [...account].sort((a, b) => ((~~((a.win / (a.win + a.lose)) * 100 || 0)) < (~~((b.win / (b.win + b.lose)) * 100 || 0)) ? 1 : (~~((a.win / (a.win + a.lose)) * 100 || 0)) > (~~((b.win / (b.win + b.lose)) * 100 || 0)) ? -1 : 0)).filter(i => !!i.ingame)
     }
     const initFunc = async () => {
         const snapshotUsers = ref.ref("users").once("value")

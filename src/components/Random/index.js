@@ -32,7 +32,7 @@ const Random = ({ changeStatusProgress }) => {
   const handleRandomPlayer = () => {    
     setUsers(prev => prev.map(i => ({ ...i, checked: false })));
     let arrayUsers = [...lastRandomNotPlay.map(i => i.ingame)];
-    let tempUsers = [...users].filter(i => !arrayUsers.includes(i.ingame));
+    let tempUsers = [...users].filter(i => !!i.ingame).filter(i => !arrayUsers.includes(i.ingame));
     let length = arrayUsers.length;
     for (let i = 0; i < 10 - length; i++) {
       let index = ~~(Math.random() * tempUsers.length);
@@ -350,18 +350,17 @@ const Random = ({ changeStatusProgress }) => {
   const handleSaveTeamRandom = () => {
     changeStatusProgress(true);
     const statistic = {
-      blueTeam: teams[0],
-      redTeam: teams[1],
+      blueTeam: teams[0].map(i => { return i.substr(0, i.length - 4)}),
+      redTeam: teams[1].map(i => { return i.substr(0, i.length - 4)}),
       dateMatch: moment(new Date()).format("YYYY-MM-DD"),
       complete: false,
       authorCreate: JSON.parse(localStorage.getItem("account")).username,
       authorUpdate: ""
     };
-
     ref.ref("historyRandom").push(statistic, snap => {
       changeStatusProgress(false);
     });
-    ref.ref("historyRandomNotPlay").push(randomPlayerNotInclude);
+    ref.ref("historyRandomNotPlay").push(randomPlayerNotInclude.filter(i => !i.ingame));
     setOldMatch(statistic);
   };
 
